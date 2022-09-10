@@ -184,7 +184,6 @@ class Venda: public Produto {
 
         void setCustoFinal(float _custoFinal);
         float getCustoFinal();
-
 };
 
 //construtor
@@ -365,7 +364,8 @@ void addVenda(vector<Venda>& venda, int p, vector<Armamento>& obj, int unidades,
 int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda, vector<Armadura>& obj2, vector<Consumivel>& obj3, int op){
 
     float valorNormalTotal, valorD, desconto, descontoP;
-    int primos, opcao;
+    int primos, opcao, div;
+    primos=0;
 
     cout << "\nTela de confirmacao\n\n";
 
@@ -387,13 +387,18 @@ int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda,
 
     cout << "Valor total sem desconto: " << valorNormalTotal <<endl;
 
-    for(int j=0; j<=unidade;j++) {
-        primos=0;
-        for(int n=1; n<=j; n++) {
+    //Verificando se é primo
+    for(int j=2; j<=unidade; j++) {
+        div = 0;
+        for(int n=2; n <=j/2; n++) {
             if(j%n==0) {
-                primos++;
+                div=1;
+                break;
             }
         }
+        if(div==0) {
+            primos++;
+        } 
     }
 
     descontoP = primos * 2;
@@ -412,7 +417,7 @@ int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda,
     if(opcao==1) {
         addVenda(venda, i, obj, unidade, valorD, obj2, obj3, op);
     }
-
+    
     return opcao;
 }
 
@@ -765,7 +770,7 @@ int main() {
                                 acum++;
                                 conf = teladeConf(i, unidadeVendas, prodArmamento, logVendas, prodArmadura, prodCons, opcaoVenda);
 
-                                if(conf==0) {
+                                if(conf==2) {
                                     break;
                                 }
 
@@ -811,7 +816,7 @@ int main() {
                                 acum++;
                                 conf = teladeConf(i, unidadeVendas, prodArmamento, logVendas, prodArmadura, prodCons, opcaoVenda);
 
-                                if(conf==0) {
+                                if(conf==2) {
                                     break;
                                 }
 
@@ -860,7 +865,7 @@ int main() {
                                 acum++;
                                 conf = teladeConf(i, unidadeVendas, prodArmamento, logVendas, prodArmadura, prodCons, opcaoVenda);
 
-                                if(conf==0) {
+                                if(conf==2) {
                                     break;
                                 }
 
