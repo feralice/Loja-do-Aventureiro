@@ -113,7 +113,6 @@ int Armamento::getDano() {
     return dano;
 }
 
-
 //Classe filha armadura
 class Armadura : public Produto {
     private:
@@ -152,10 +151,12 @@ class Consumivel : public Produto {
         string getUso();
 };
 
+//Construtor
 Consumivel::Consumivel(int _unidade, int _id, string _nome, string _tipo, float _preco, string _uso) : Produto(_unidade, _id, _nome, _tipo, _preco) {
     uso = _uso;
 }
 
+//gets e sets
 void Consumivel::setUSo(string _uso) {
     this->uso = _uso;
 }
@@ -188,11 +189,9 @@ class Venda: public Produto {
 
 //construtor
 Venda::Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, float _precoFinal, string _tipo, int _unidade) : Produto(_unidade, _id, _nome, _tipo, _preco) {
-
     idV = _idV;
     quantVenda = _quantVenda;
     custoFinal = _precoFinal;
-
 }
 
 //gets e sets
@@ -242,7 +241,7 @@ void criarProduto(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consumi
     cout << "Preco do item: ";
     cin >> preco;
 
-    //Cria uma armamento
+    //Cria um armamento
     if(op==1) {
         cout << "Dano do item: ";
         cin >> dano;
@@ -549,7 +548,7 @@ int main() {
             cin >> opcaoEstoque;
 
             switch(opcaoEstoque) {
-                //cadastro
+                //cadastrar item
                 case 1:
                     cout << "\nQue item deseja cadastrar?" <<endl;
                     menuItens();
@@ -564,7 +563,8 @@ int main() {
                     criarProduto(prodArmamento, prodArmadura, prodCons, opcaoCadItem);
                     
                 break;
-
+                
+                //excluir item
                 case 2:
                     cout << "Qual item deseja excluir?" <<endl;
                     menuItens();
@@ -704,14 +704,16 @@ int main() {
                     }
 
                 break;
-
+                
+                //Listar estoque
                 case 4:
                     cout << "Listagem do estoque: " <<endl;
                     listaArmamentos(prodArmamento);
                     listaArmaduras(prodArmadura);
                     listaCons(prodCons);
                 break;
-
+                
+                //exportar estoque para um arquivo txt
                 case 5:
                     exportarArqEst(prodArmamento, prodArmadura, prodCons);
                 break;
@@ -729,7 +731,7 @@ int main() {
             cin >> opcaoV;
 
             switch(opcaoV) {
-
+                //Venda de um item
                 case 1:
                     listaArmamentos(prodArmamento);
                     listaArmaduras(prodArmadura);
@@ -887,11 +889,13 @@ int main() {
                         }
                     }
                 break;
-
+                
+                //Visualizar o log de vendas
                 case 2:
                     visLog(logVendas);
                 break;
-
+                
+                //exportar as vendas para um arquivo txt
                 case 3:
                     expLogV(logVendas);
                 break;
