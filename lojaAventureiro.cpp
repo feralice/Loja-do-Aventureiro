@@ -113,7 +113,6 @@ int Armamento::getDano() {
     return dano;
 }
 
-
 //Classe filha armadura
 class Armadura : public Produto {
     private:
@@ -338,7 +337,7 @@ void exportarArqEst(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consu
         arq << obj3[i].getPreco() << " ";
         arq << obj3[i].getUso() << endl;
     }
-
+    
     arq.close();
 }
 
@@ -760,8 +759,7 @@ int main() {
                 default:
                     cout << "Opcao invalida"<<endl;
             }
-
-
+            
 
         //Tela de Vendas
         } else if(opcaoInicial == 2) {
@@ -868,7 +866,6 @@ int main() {
                                     cout<<"\nTamanho disponivel de unidades excedido!" << endl;
                                     break;
                                 }
-
                             } 
                         }
                         
