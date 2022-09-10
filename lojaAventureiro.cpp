@@ -17,9 +17,9 @@ class Produto {
         string nome;
         string tipo;
         float preco;
-    
-    //metodos
+
     public:
+    //metodos
         Produto(int _unidade, int _id, string _nome, string _tipo, float _preco);
 
         void setUnidade(int _unidade);
@@ -36,10 +36,9 @@ class Produto {
 
         void setPreco(float _preco);
         float getPreco();
-
 };
 
-//Construtor do Produto
+//Construtor
 Produto::Produto(int _unidade, int _id, string _nome, string _tipo, float _preco) {
     unidade = _unidade;
     id = _id;
@@ -89,14 +88,11 @@ float Produto::getPreco() {
     return preco;
 }
 
-
-//Classe filha Armamento
+//Classe filha de um Armamento
 class Armamento : public Produto {
-    //atributos
     private:
         int dano;
-    
-    //metodos
+
     public:
         Armamento(int _unidade, int _id, string _nome, string _tipo, float _preco, int _dano);
         void setDano(int _dano);
@@ -120,11 +116,9 @@ int Armamento::getDano() {
 
 //Classe filha armadura
 class Armadura : public Produto {
-    //atributo
     private:
         int durabilidade;
-    
-    //metodos
+
     public:
         Armadura(int _unidade, int _id, string _nome, string _tipo, float _preco, int _durabilidade);
 
@@ -146,13 +140,11 @@ int Armadura::getDurabilidade() {
     return durabilidade;
 }
 
-//classe filha para consumiveis
+//clase filha de um item consumível
 class Consumivel : public Produto {
-    //atributo
     private:
         string uso;
-    
-    //metodos
+
     public:
         Consumivel(int _unidade, int _id, string _nome, string _tipo, float _preco, string _uso);
 
@@ -160,12 +152,10 @@ class Consumivel : public Produto {
         string getUso();
 };
 
-//construtor
 Consumivel::Consumivel(int _unidade, int _id, string _nome, string _tipo, float _preco, string _uso) : Produto(_unidade, _id, _nome, _tipo, _preco) {
     uso = _uso;
 }
 
-//gets e sets
 void Consumivel::setUSo(string _uso) {
     this->uso = _uso;
 }
@@ -174,15 +164,14 @@ string Consumivel::getUso() {
     return uso;
 }
 
-//classe filha para as vendas realizadas
+//classe filha de uma venda
 class Venda: public Produto {
-    //atributos
+
     private:
         int idV;
         int quantVenda;
         float custoFinal;
-    
-    //metodos
+
     public:
         Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, float _precoFinal, string _tipo, int _unidade);
 
@@ -194,16 +183,15 @@ class Venda: public Produto {
 
         void setCustoFinal(float _custoFinal);
         float getCustoFinal();
-
 };
+
 //construtor
 Venda::Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, float _precoFinal, string _tipo, int _unidade) : Produto(_unidade, _id, _nome, _tipo, _preco) {
-
     idV = _idV;
     quantVenda = _quantVenda;
     custoFinal = _precoFinal;
-
 }
+
 //gets e sets
 void Venda:: setIdV(int _idv) {
     this->idV = _idv;
@@ -231,13 +219,12 @@ float Venda:: getCustoFinal() {
 
 //-------------------funcoes-------------------
 
-//Função para criar um armamento
+//Função para criar uma armadura
 void criarArm(vector<Armamento>& obj){
 
     int id, dano, unidade;
     string nome, tipo;
     float preco;
-
 
     cout << "Quantas unidades voce deseja cadastrar? ";
     cin >> unidade;
@@ -256,8 +243,8 @@ void criarArm(vector<Armamento>& obj){
 
     Armamento novoArm(unidade,id,nome,tipo,preco,dano);
     obj.push_back(novoArm);
-    
 }
+
 //Função para criar uma armadura
 void criarArmadura(vector<Armadura>& obj) {
 
@@ -282,10 +269,9 @@ void criarArmadura(vector<Armadura>& obj) {
 
     Armadura novaArmadura(unidade,id,nome,tipo,preco,durabilidade);
     obj.push_back(novaArmadura);
-
 }
 
-//Função para criar um Consumível
+//Função para criar um consumível
 void criarCons(vector<Consumivel>& obj) {
 
     int id, unidade;
@@ -309,7 +295,6 @@ void criarCons(vector<Consumivel>& obj) {
 
     Consumivel novoCons(unidade,id,nome,tipo,preco,uso);
     obj.push_back(novoCons);
-
 }
 
 //Função para exportar o estoque para um arquivo txt
@@ -355,7 +340,6 @@ void exportarArqEst(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consu
     }
 
     arq.close();
-
 }
 
 //Função para exportar o log de vendas para um arquivo txt
@@ -364,9 +348,7 @@ void expLogV(vector<Venda>& venda) {
     ofstream arqV("vendas.txt");
 
     arqV << "Vendas: " << endl;
-
     for(int i=0; i<venda.size(); i++) {
-
         arqV << venda[i].getIdV() << " ";
         arqV << venda[i].getId() << " ";
         arqV << venda[i].getNome() << " ";
@@ -377,75 +359,57 @@ void expLogV(vector<Venda>& venda) {
     }
 
     arqV.close();
-
 }
 
-//função para adicionar uma venda
+//Função para adicionar uma venda
 void addVenda(vector<Venda>& venda, int p, vector<Armamento>& obj, int unidades, float valor, vector<Armadura>& obj2, vector<Consumivel>& obj3, int op) {
 
+    //Armamento
     if(op==1) {
-
         Venda novaV (obj[p].getId(), idVenda, obj[p].getNome(), unidades, obj[p].getPreco(), valor, obj[p].getTipo() , unidades);
         venda.push_back(novaV);
 
-        cout << "\nLog de Vendas\n\n";
-        cout << "ID da venda: " << venda[tamV].getIdV() << endl;
-        cout << "ID do produto: " << venda[tamV].getId() << endl;
-        cout << "Nome do item: " << venda[tamV].getNome() << endl;
-        cout << "Quantidade de itens vendidos: " << venda[tamV].getUnidade() << endl;
-        cout << "Custo por item sem desconto: " << venda[tamV].getPreco() << endl;
-        cout << "Custo final: " << venda[tamV].getCustoFinal() << endl;
-
+    //Armadura
     } else if(op==2) {
-
         Venda novaV (obj2[p].getId(), idVenda, obj2[p].getNome(), unidades, obj2[p].getPreco(), valor, obj2[p].getTipo() , unidades);
         venda.push_back(novaV);
 
-        cout << "\nLog de Vendas\n\n";
-        cout << "ID da venda: " << idVenda << endl;
-        cout << "ID do produto: " << venda[tamV].getId() << endl;
-        cout << "Nome do item: " << venda[tamV].getNome() << endl;
-        cout << "Quantidade de itens vendidos: " << unidades << endl;
-        cout << "Custo por item sem desconto: " << venda[tamV].getPreco() << endl;
-        cout << "Custo final: " << valor << endl;
-
+    //Consumivel
     } else if(op==3) {
-
         Venda novaV (obj3[p].getId(), idVenda, obj3[p].getNome(), unidades, obj3[p].getPreco(), valor, obj3[p].getTipo() , unidades);
         venda.push_back(novaV);
-
-        cout << "\nLog de Vendas\n\n";
-        cout << "ID da venda: " << idVenda << endl;
-        cout << "ID do produto: " << venda[tamV].getId() << endl;
-        cout << "Nome do item: " << venda[tamV].getNome() << endl;
-        cout << "Quantidade de itens vendidos: " << unidades << endl;
-        cout << "Custo por item sem desconto: " << venda[tamV].getPreco() << endl;
-        cout << "Custo final: " << valor << endl;
-
     }
+
+    cout << "\nLog de Vendas\n\n";
+    cout << "ID da venda: " << idVenda << endl;
+    cout << "ID do produto: " << venda[tamV].getId() << endl;
+    cout << "Nome do item: " << venda[tamV].getNome() << endl;
+    cout << "Quantidade de itens vendidos: " << unidades << endl;
+    cout << "Custo por item sem desconto: " << venda[tamV].getPreco() << endl;
+    cout << "Custo final: " << valor << endl;
 
     tamV++;
     idVenda++;
-
 }
 
-//função para mostrar a tela de confirmação ao realizar uma venda
 int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda, vector<Armadura>& obj2, vector<Consumivel>& obj3, int op){
 
-    float valorNormalTotal, valorD;
-    float desconto, descontoP;
+    float valorNormalTotal, valorD, desconto, descontoP;
     int primos, opcao;
-    int tam=0;
-
 
     cout << "\nTela de confirmacao\n\n";
 
+    //Armamento
     if(op==1) {
         cout << "Custo da unidade: " << obj[i].getPreco() << endl;
         valorNormalTotal = unidade * obj[i].getPreco();
+
+    //Armadura
     } else if(op==2) {
         cout << "Custo da unidade: " << obj2[i].getPreco() << endl;
         valorNormalTotal = unidade * obj2[i].getPreco();
+
+    //Consumível
     } else if(op==3) {
         cout << "Custo da unidade: " << obj3[i].getPreco() << endl;
         valorNormalTotal = unidade * obj3[i].getPreco();
@@ -466,13 +430,11 @@ int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda,
     desconto = descontoP/100;
     desconto = desconto*valorNormalTotal;
 
-
     cout << "O desconto em PO: " <<desconto << endl;
     cout << "O desconto em %: "<<descontoP << "%" << endl;
 
     valorD = valorNormalTotal - desconto;
     cout << "O valor total com desconto: " << valorD << endl;
-
 
     cout << "\nDeseja continuar a venda?\n1 - SIM\n2 - NAO\n";
     cin >> opcao;
@@ -482,18 +444,15 @@ int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda,
     }
 
     return opcao;
-
 }
 
-//função para mostrar todos os armamentos do estoque
+//Função que lista todos os armamentos do estoque
 void listaArmamentos(vector<Armamento>& obj) {
-
-    int tam = obj.size();
 
     cout << "\nLista de Armamentos: \n";
     cout << "Unidade        ID           Nome                Tipo                 Preco           Dano\n";
     cout << "-----------------------------------------------------------------------------------------------\n";
-    for( int i=0; i<tam; i++) {
+    for( int i=0; i<obj.size(); i++) {
         cout << obj[i].getUnidade();
         cout <<"       ||       " << obj[i].getId(); 
         cout << "     ||     " << obj[i].getNome();
@@ -503,15 +462,13 @@ void listaArmamentos(vector<Armamento>& obj) {
     }
 }
 
-//função para mostrar todos as armaduras do estoque
+//Função que lista todos as armaduras do estoque
 void listaArmaduras(vector<Armadura>& obj) {
-
-        int tam = obj.size();
 
     cout << "\nLista de Armaduras: \n";
     cout << "Unidade        ID               Nome                 Tipo                 Preco        Durabilidade\n";
     cout << "---------------------------------------------------------------------------------------------------\n";
-    for( int i=0; i<tam; i++) {
+    for( int i=0; i<obj.size(); i++) {
         cout << obj[i].getUnidade();
         cout <<"     ||       " << obj[i].getId(); 
         cout << "     ||     " << obj[i].getNome();
@@ -519,18 +476,15 @@ void listaArmaduras(vector<Armadura>& obj) {
         cout << "     ||     " << obj[i].getPreco();
         cout << " PO     ||     " << obj[i].getDurabilidade() << endl;
     }
-
 }
 
-//função para mostrar todos os consumiveis do estoque
+//Função que lista todos os consumíveis do estoque
 void listaCons(vector<Consumivel>& obj) {
-
-        int tam = obj.size();
 
     cout << "\nLista de Consumiveis: \n";
     cout << "Unidade       ID           Nome             Tipo             Preco            Uso\n";
     cout << "------------------------------------------------------------------------------------------\n";
-    for( int i=0; i<tam; i++) {
+    for( int i=0; i<obj.size(); i++) {
         cout << obj[i].getUnidade();
         cout <<"       ||     " << obj[i].getId(); 
         cout << "    ||     " << obj[i].getNome();
@@ -538,10 +492,9 @@ void listaCons(vector<Consumivel>& obj) {
         cout << "     ||     " << obj[i].getPreco();
         cout << " PO     ||     " << obj[i].getUso() << endl;
     }
-
 }
 
-//função para mostrar todas as vendas
+//Função que mostra o log de vendas
 void visLog(vector<Venda>& obj) {
 
     cout << "\nLog de Vendas" <<endl;
@@ -554,55 +507,42 @@ void visLog(vector<Venda>& obj) {
         cout <<"Custo por item: " << obj[i].getPreco() << endl;
         cout <<"Custo Final com desconto: " << obj[i].getCustoFinal() << endl;
     }
-
 }
 
-//função para mostrar o menu inicial
+//Mostra o menu inicial
 void menuInicial() {
     cout << "\nO que deseja ver?\n1 - Estoque\n2 - Vendas\n3 - Finalizar programa\n" << endl;
 }
 
-//função para mostrar o menu ao entrar no estoque
+//Mostra o menu ao entrar no estoque
 void menuEstoque() {
-
     cout << "\n1 - Cadastrar item" << endl;
     cout << "2 - Remover item" <<endl;
     cout <<"3 - Adicionar unidade" <<endl;
     cout <<"4 - Listar o estoque" <<endl;
     cout <<"5 - Exportar estoque para arquivo txt\n" <<endl;
-
 }
 
-//menu dos itens
+//Mostra o menu de itens disponíveis
 void menuItens() {
-
     cout << "\n1 - Armamento" << endl;
     cout << "2 - Armadura" <<endl;
     cout <<"3 - Consumivel\n" <<endl;
-    
 }
 
-//função para mostrar ações possíveis na venda
+//Mostra o menu ao entrar nas vendas
 void menuVenda() {
-
     cout <<"1 - Realizar venda" <<endl;
     cout <<"2 - Visualizar log de vendas" <<endl;
     cout <<"3 - Exportar vendas para arquivo txt"<<endl;
-
 }
 
 
-//main
 int main() {
 
     int opcaoInicial, opcaoEstoque, opcaoCadItem, opcaoExcluir, opcaoUnidade, opcaoV;
     int codigo, idUnid, unidade, opcaoVenda, codigoVenda, unidadeVendas;
-    int custoU, valorN, desconto, descontoP, valorDes;
-    int acum=0;
-    int novaUnidade;
-    int tamArmamento = 1;
-    int tamArmadura = 1;
-    int tamCons = 1;
+    int custoU, valorN, desconto, descontoP, valorDes, novaUnidade;
 
     //Inicializando os vetores
     vector<Armamento> prodArmamento;
@@ -610,8 +550,7 @@ int main() {
     vector<Consumivel> prodCons;
     vector<Venda>logVendas;
 
-
-    //iniciando um tipo de cada já no estoque
+    //------iniciando um tipo de cada já no estoque
     //--Armamento
     Armamento novoArm(1,1,"Fuzil", "Arma de fogo", 120, 90);
     prodArmamento.push_back(novoArm);
@@ -635,7 +574,6 @@ int main() {
         //OPCAO DE ESTOQUE
         if(opcaoInicial==1) {
             
-            //menu do estoque
             menuEstoque();
             cin >> opcaoEstoque;
 
@@ -653,21 +591,17 @@ int main() {
 
                     //Cadastra um armamento
                     if(opcaoCadItem == 1) {
-                        
                         criarArm(prodArmamento);
-
                     } 
+
                     //Cadastra uma armadura
                     else if(opcaoCadItem == 2) {
-
                         criarArmadura(prodArmadura);
-
                     }
-        
+
+                    //Cadastra um consumível
                     else if(opcaoCadItem == 3) {
-
                         criarCons(prodCons);
-
                     }
                 break;
 
@@ -702,6 +636,7 @@ int main() {
                         listaArmamentos(prodArmamento);
 
                     }
+
                     //exclui uma armadura
                     else if(opcaoExcluir == 2) {
 
@@ -721,8 +656,8 @@ int main() {
                             }
                         }
                         listaArmaduras(prodArmadura);
-
                     } 
+
                     //Excluir um consumível
                     else if(opcaoExcluir==3) {
                         
@@ -742,7 +677,6 @@ int main() {
                             }
                         }
                         listaCons(prodCons);
-
                     }
 
                 break;
@@ -792,6 +726,7 @@ int main() {
                         }
                         listaArmaduras(prodArmadura);
 
+                    //adiciona unidades de um consumível
                     } else if(opcaoUnidade==3) {
 
                         listaCons(prodCons);
@@ -885,7 +820,6 @@ int main() {
                                     cout<<"\nTamanho disponivel de unidades excedido!" << endl;
                                     break;
                                 }
-
                             } 
                         }
                         
@@ -897,7 +831,6 @@ int main() {
                         if(novaUnidade==0) {
                             prodArmamento.erase(prodArmamento.begin() + op);
                         }
-            
                     }
 
                     //Venda de uma armadura
@@ -948,7 +881,6 @@ int main() {
                         if(novaUnidade==0) {
                             prodArmadura.erase(prodArmadura.begin() + op);
                         }
-
                     }
 
                     //Vende um consumivel
@@ -986,7 +918,6 @@ int main() {
                                     cout<<"\nTamanho disponivel de unidades excedido!" << endl;
                                     break;
                                 }
-
                             } 
                         }
                         
@@ -999,7 +930,6 @@ int main() {
                         if(novaUnidade==0) {
                             prodCons.erase(prodCons.begin() + op);
                         }
-                        
                     }
                 break;
 
