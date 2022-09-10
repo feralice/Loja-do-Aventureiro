@@ -113,6 +113,7 @@ int Armamento::getDano() {
     return dano;
 }
 
+
 //Classe filha armadura
 class Armadura : public Produto {
     private:
@@ -182,13 +183,16 @@ class Venda: public Produto {
 
         void setCustoFinal(float _custoFinal);
         float getCustoFinal();
+
 };
 
 //construtor
 Venda::Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, float _precoFinal, string _tipo, int _unidade) : Produto(_unidade, _id, _nome, _tipo, _preco) {
+
     idV = _idV;
     quantVenda = _quantVenda;
     custoFinal = _precoFinal;
+
 }
 
 //gets e sets
@@ -218,62 +222,10 @@ float Venda:: getCustoFinal() {
 
 //-------------------funcoes-------------------
 
-//Função para criar uma armadura
-void criarArm(vector<Armamento>& obj){
+//Função para criar um produto(armamento, armadura ou consumível)
+void criarProduto(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consumivel>& obj3, int op) {
 
-    int id, dano, unidade;
-    string nome, tipo;
-    float preco;
-
-    cout << "Quantas unidades voce deseja cadastrar? ";
-    cin >> unidade;
-    cout << "ID do produto: ";
-    cin >> id;
-    fflush(stdin);
-    cout << "Nome do item: ";
-    getline(cin,nome);
-    fflush(stdin);
-    cout << "Tipo do item: ";
-    cin >> tipo;
-    cout << "Preco do item: ";
-    cin >> preco;
-    cout << "Dano do item: ";
-    cin >> dano;
-
-    Armamento novoArm(unidade,id,nome,tipo,preco,dano);
-    obj.push_back(novoArm);
-}
-
-//Função para criar uma armadura
-void criarArmadura(vector<Armadura>& obj) {
-
-    int id, durabilidade, unidade;
-    string nome, tipo;
-    float preco;
-
-    cout << "Quantas unidades voce deseja cadastrar? ";
-    cin >> unidade;
-    cout << "ID do produto: ";
-    cin >> id;
-    fflush(stdin);
-    cout << "Nome do item: ";
-    getline(cin,nome);
-    fflush(stdin);
-    cout << "Tipo do item: ";
-    cin >> tipo;
-    cout << "Preco do item: ";
-    cin >> preco;
-    cout << "Durabilidade do item: ";
-    cin >> durabilidade;
-
-    Armadura novaArmadura(unidade,id,nome,tipo,preco,durabilidade);
-    obj.push_back(novaArmadura);
-}
-
-//Função para criar um consumível
-void criarCons(vector<Consumivel>& obj) {
-
-    int id, unidade;
+    int id, dano, unidade, durabilidade;
     string nome, tipo, uso;
     float preco;
 
@@ -289,11 +241,31 @@ void criarCons(vector<Consumivel>& obj) {
     cin >> tipo;
     cout << "Preco do item: ";
     cin >> preco;
-    cout << "Uso do item: ";
-    cin >> uso;
 
-    Consumivel novoCons(unidade,id,nome,tipo,preco,uso);
-    obj.push_back(novoCons);
+    //Cria uma armamento
+    if(op==1) {
+        cout << "Dano do item: ";
+        cin >> dano;
+
+        Armamento novoArm(unidade,id,nome,tipo,preco,dano);
+        obj.push_back(novoArm);
+
+    //cria uma armadura
+    } else if(op==2) {
+        cout << "Durabilidade do item: ";
+        cin >> durabilidade;
+
+        Armadura novaArmadura(unidade,id,nome,tipo,preco,durabilidade);
+        obj2.push_back(novaArmadura);
+
+    //cria um consumível    
+    } else if(op==3) {
+        cout << "Uso do item: ";
+        cin >> uso;
+
+        Consumivel novoCons(unidade,id,nome,tipo,preco,uso);
+        obj3.push_back(novoCons);
+    }
 }
 
 //Função para exportar o estoque para um arquivo txt
@@ -337,7 +309,7 @@ void exportarArqEst(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consu
         arq << obj3[i].getPreco() << " ";
         arq << obj3[i].getUso() << endl;
     }
-    
+
     arq.close();
 }
 
@@ -588,20 +560,9 @@ int main() {
                         cin >> opcaoCadItem;
                     }
 
-                    //Cadastra um armamento
-                    if(opcaoCadItem == 1) {
-                        criarArm(prodArmamento);
-                    } 
-
-                    //Cadastra uma armadura
-                    else if(opcaoCadItem == 2) {
-                        criarArmadura(prodArmadura);
-                    }
-
-                    //Cadastra um consumível
-                    else if(opcaoCadItem == 3) {
-                        criarCons(prodCons);
-                    }
+                    //cria um produto
+                    criarProduto(prodArmamento, prodArmadura, prodCons, opcaoCadItem);
+                    
                 break;
 
                 case 2:
@@ -633,7 +594,6 @@ int main() {
                             }
                         }
                         listaArmamentos(prodArmamento);
-
                     }
 
                     //exclui uma armadura
@@ -759,7 +719,7 @@ int main() {
                 default:
                     cout << "Opcao invalida"<<endl;
             }
-            
+
 
         //Tela de Vendas
         } else if(opcaoInicial == 2) {
@@ -812,7 +772,6 @@ int main() {
                                 if(novaUnidade >=0) {
                                     prodArmamento[i].setUnidade(novaUnidade);
                                     op = i;
-                                    
                                     break;
                                 } else {
                                     cout<<"\nTamanho disponivel de unidades excedido!" << endl;
@@ -859,13 +818,13 @@ int main() {
                                 if(novaUnidade >=0) {
                                     //atualiza o estoque com o novo numero de unidades disponiveis
                                     prodArmadura[i].setUnidade(novaUnidade);
-                                    op = i;
-                                    
+                                    op = i;                                   
                                     break;
                                 } else {
                                     cout<<"\nTamanho disponivel de unidades excedido!" << endl;
                                     break;
                                 }
+
                             } 
                         }
                         
@@ -908,8 +867,7 @@ int main() {
                                 if(novaUnidade >=0) {
                                     //atualiza o estoque com o novo numero de unidades disponiveis
                                     prodCons[i].setUnidade(novaUnidade);
-                                    op = i;
-                                    
+                                    op = i;                                    
                                     break;
                                 } else {
                                     cout<<"\nTamanho disponivel de unidades excedido!" << endl;
@@ -944,6 +902,5 @@ int main() {
         }
         menuInicial();
     }
-
     return 0;
 }
