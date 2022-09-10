@@ -5,6 +5,7 @@
 
 int idVenda = 1;
 int tamV = 0;
+
 using namespace std;
 
 //Classe Produtos com todos os atributos comuns a todos os itens
@@ -16,9 +17,9 @@ class Produto {
         string nome;
         string tipo;
         float preco;
-
-    public:
+    
     //metodos
+    public:
         Produto(int _unidade, int _id, string _nome, string _tipo, float _preco);
 
         void setUnidade(int _unidade);
@@ -38,7 +39,7 @@ class Produto {
 
 };
 
-//Construtor
+//Construtor do Produto
 Produto::Produto(int _unidade, int _id, string _nome, string _tipo, float _preco) {
     unidade = _unidade;
     id = _id;
@@ -91,11 +92,12 @@ float Produto::getPreco() {
 
 //Classe filha Armamento
 class Armamento : public Produto {
+    //atributos
     private:
         int dano;
-
-    public:
+    
     //metodos
+    public:
         Armamento(int _unidade, int _id, string _nome, string _tipo, float _preco, int _dano);
         void setDano(int _dano);
         int getDano();
@@ -118,11 +120,12 @@ int Armamento::getDano() {
 
 //Classe filha armadura
 class Armadura : public Produto {
+    //atributo
     private:
         int durabilidade;
-
-    public:
+    
     //metodos
+    public:
         Armadura(int _unidade, int _id, string _nome, string _tipo, float _preco, int _durabilidade);
 
         void setDurabilidade(int _durabilidade);
@@ -143,23 +146,26 @@ int Armadura::getDurabilidade() {
     return durabilidade;
 }
 
-
+//classe filha para consumiveis
 class Consumivel : public Produto {
+    //atributo
     private:
         string uso;
-
-    public:
+    
     //metodos
+    public:
         Consumivel(int _unidade, int _id, string _nome, string _tipo, float _preco, string _uso);
 
         void setUSo(string _uso);
         string getUso();
 };
 
+//construtor
 Consumivel::Consumivel(int _unidade, int _id, string _nome, string _tipo, float _preco, string _uso) : Produto(_unidade, _id, _nome, _tipo, _preco) {
     uso = _uso;
 }
 
+//gets e sets
 void Consumivel::setUSo(string _uso) {
     this->uso = _uso;
 }
@@ -168,13 +174,15 @@ string Consumivel::getUso() {
     return uso;
 }
 
+//classe filha para as vendas realizadas
 class Venda: public Produto {
-
+    //atributos
     private:
         int idV;
         int quantVenda;
         float custoFinal;
-
+    
+    //metodos
     public:
         Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, float _precoFinal, string _tipo, int _unidade);
 
@@ -188,7 +196,7 @@ class Venda: public Produto {
         float getCustoFinal();
 
 };
-
+//construtor
 Venda::Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, float _precoFinal, string _tipo, int _unidade) : Produto(_unidade, _id, _nome, _tipo, _preco) {
 
     idV = _idV;
@@ -196,7 +204,7 @@ Venda::Venda(int _id, int _idV, string _nome, int _quantVenda, float _preco, flo
     custoFinal = _precoFinal;
 
 }
-
+//gets e sets
 void Venda:: setIdV(int _idv) {
     this->idV = _idv;
 }
@@ -223,7 +231,7 @@ float Venda:: getCustoFinal() {
 
 //-------------------funcoes-------------------
 
-
+//Função para criar um armamento
 void criarArm(vector<Armamento>& obj){
 
     int id, dano, unidade;
@@ -250,7 +258,7 @@ void criarArm(vector<Armamento>& obj){
     obj.push_back(novoArm);
     
 }
-
+//Função para criar uma armadura
 void criarArmadura(vector<Armadura>& obj) {
 
     int id, durabilidade, unidade;
@@ -277,6 +285,7 @@ void criarArmadura(vector<Armadura>& obj) {
 
 }
 
+//Função para criar um Consumível
 void criarCons(vector<Consumivel>& obj) {
 
     int id, unidade;
@@ -303,6 +312,7 @@ void criarCons(vector<Consumivel>& obj) {
 
 }
 
+//Função para exportar o estoque para um arquivo txt
 void exportarArqEst(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consumivel>& obj3) {
 
     ofstream arq("estoque.txt");
@@ -348,6 +358,7 @@ void exportarArqEst(vector<Armamento>& obj, vector<Armadura>& obj2, vector<Consu
 
 }
 
+//Função para exportar o log de vendas para um arquivo txt
 void expLogV(vector<Venda>& venda) {
 
     ofstream arqV("vendas.txt");
@@ -369,6 +380,7 @@ void expLogV(vector<Venda>& venda) {
 
 }
 
+//função para adicionar uma venda
 void addVenda(vector<Venda>& venda, int p, vector<Armamento>& obj, int unidades, float valor, vector<Armadura>& obj2, vector<Consumivel>& obj3, int op) {
 
     if(op==1) {
@@ -417,6 +429,7 @@ void addVenda(vector<Venda>& venda, int p, vector<Armamento>& obj, int unidades,
 
 }
 
+//função para mostrar a tela de confirmação ao realizar uma venda
 int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda, vector<Armadura>& obj2, vector<Consumivel>& obj3, int op){
 
     float valorNormalTotal, valorD;
@@ -472,7 +485,7 @@ int teladeConf(int i, int unidade, vector<Armamento>& obj, vector<Venda>& venda,
 
 }
 
-
+//função para mostrar todos os armamentos do estoque
 void listaArmamentos(vector<Armamento>& obj) {
 
     int tam = obj.size();
@@ -490,6 +503,7 @@ void listaArmamentos(vector<Armamento>& obj) {
     }
 }
 
+//função para mostrar todos as armaduras do estoque
 void listaArmaduras(vector<Armadura>& obj) {
 
         int tam = obj.size();
@@ -508,6 +522,7 @@ void listaArmaduras(vector<Armadura>& obj) {
 
 }
 
+//função para mostrar todos os consumiveis do estoque
 void listaCons(vector<Consumivel>& obj) {
 
         int tam = obj.size();
@@ -526,6 +541,7 @@ void listaCons(vector<Consumivel>& obj) {
 
 }
 
+//função para mostrar todas as vendas
 void visLog(vector<Venda>& obj) {
 
     cout << "\nLog de Vendas" <<endl;
@@ -541,10 +557,12 @@ void visLog(vector<Venda>& obj) {
 
 }
 
+//função para mostrar o menu inicial
 void menuInicial() {
     cout << "\nO que deseja ver?\n1 - Estoque\n2 - Vendas\n3 - Finalizar programa\n" << endl;
 }
 
+//função para mostrar o menu ao entrar no estoque
 void menuEstoque() {
 
     cout << "\n1 - Cadastrar item" << endl;
@@ -555,6 +573,7 @@ void menuEstoque() {
 
 }
 
+//menu dos itens
 void menuItens() {
 
     cout << "\n1 - Armamento" << endl;
@@ -563,6 +582,7 @@ void menuItens() {
     
 }
 
+//função para mostrar ações possíveis na venda
 void menuVenda() {
 
     cout <<"1 - Realizar venda" <<endl;
@@ -572,7 +592,7 @@ void menuVenda() {
 }
 
 
-
+//main
 int main() {
 
     int opcaoInicial, opcaoEstoque, opcaoCadItem, opcaoExcluir, opcaoUnidade, opcaoV;
